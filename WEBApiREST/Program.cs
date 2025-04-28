@@ -17,13 +17,15 @@ using WEBApiREST.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 var services = builder.Services;
+var databaseConnectionString = GetDatabaseConnectionString();
+
 // Add services to the container.
 
 
 builder.Services.AddDbContext<ApplicationContext>(
     options =>
     {
-        options.UseNpgsql(configuration.GetConnectionString(nameof(ApplicationContext)));
+        options.UseNpgsql(databaseConnectionString);
     });
 //services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
 
@@ -32,7 +34,7 @@ services.AddLogging(c => c.AddFluentMigratorConsole())
                 .AddFluentMigratorCore()
                 .ConfigureRunner(c => c
                     .AddPostgres()
-                     .WithGlobalConnectionString("User ID=postgres;Password=password;Host=localhost;Port=5433;database=project;")
+                     .WithGlobalConnectionString(databaseConnectionString)
                      .ScanIn(Assembly.GetExecutingAssembly()).For.All());
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -129,3 +131,8 @@ app.Migrate();
 
 
 app.Run();
+
+
+string GetDatabaseConnectionString() =>
+    configuration.GetConnectionString("DatabaseConnection") ??
+    throw new InvalidOperationException("Строка подключения к БД не задана в конфигурации (секция ConnectionStrings__DatabaseConnection).");
