@@ -36,6 +36,8 @@ services.AddLogging(c => c.AddFluentMigratorConsole())
                     .AddPostgres()
                      .WithGlobalConnectionString(databaseConnectionString)
                      .ScanIn(Assembly.GetExecutingAssembly()).For.All());
+
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -50,7 +52,6 @@ services.AddCors();
 
 services.AddBearerAuthentication(configuration);
 services.AddScoped<TokenServiceMiddleware>();
-services.AddScoped<IDataSeed, DataSeed>();
 services.AddSwaggerGen(c =>
 {
     c.AddSecurityDefinition("basic", new OpenApiSecurityScheme

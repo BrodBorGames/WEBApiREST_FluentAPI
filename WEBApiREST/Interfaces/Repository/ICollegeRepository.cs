@@ -9,8 +9,8 @@ namespace WEBApiREST.Repositories
         Task<CollegeEntity> Create(CollegeEntity entity);
         Task<List<CollegeEntity>> Get();
         
-        Task Delete(string Name);
-        Task Update(CollegeEntity entity);
+        Task<CollegeEntity?> Delete(int Id);
+        Task<CollegeEntity?> Update(CollegeEntity entity);
         Task<CollegeEntity?> GetById(int id);
     }
 }

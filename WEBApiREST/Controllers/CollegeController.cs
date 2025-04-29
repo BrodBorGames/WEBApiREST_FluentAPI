@@ -26,14 +26,41 @@ namespace WEBApiREST.Controllers
         public async Task<ActionResult<CollegeEntity>> GetById(int id)
         {
             var college = await _collegeRepository.GetById(id);
+            if(college == null)
+            {
+                return NotFound();
+            }
             return Ok(college);
         }
+        
 
         [HttpPost]
         public async Task<ActionResult<CollegeEntity>> Add(CollegeEntity collegeEntity)
         {
             var college = await _collegeRepository.Create(collegeEntity);
-            return Ok(college);
+            return Created();
+        }
+        [HttpPut]
+        public async Task<ActionResult<CollegeEntity>> Put(CollegeEntity college)
+        {
+            if (college == null)
+                return BadRequest();
+            var existingCollege = await _collegeRepository.Update(college);
+            if (existingCollege == null)
+                return NotFound();
+
+            return Ok(existingCollege);
+        }
+        [HttpDelete]
+        public async Task<ActionResult<CollegeEntity>> Delete (int Id)
+        {
+            var deletedCollege = await _collegeRepository.Delete(Id);
+            if(deletedCollege == null)
+            {
+                return NotFound();
+            }
+            return Ok(deletedCollege);
+
         }
     }
 }

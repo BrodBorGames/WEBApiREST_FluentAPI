@@ -39,18 +39,29 @@ namespace WEBApiREST.Repositories
             await _dbcontext.SaveChangesAsync();
         }
 
-        public async Task Delete(string Name)
+        public async Task<CollegeEntity?> Delete(int Id)
         {
-           var college = _dbcontext.College.FirstOrDefault(x => x.Name == Name);
+           var college = _dbcontext.College.FirstOrDefault(x => x.Id == Id);
             if (college != null) { 
                 _dbcontext.College.Remove(college);
                 await _dbcontext.SaveChangesAsync();
+                return college;
             }
+            return null;
         }
 
-        public Task Update(CollegeEntity collegeEntity)
+        public async Task<CollegeEntity?> Update(CollegeEntity collegeEntity)
         {
-            throw new NotImplementedException();
+            
+            var college = await _dbcontext.College.FirstOrDefaultAsync(x => x.Id == collegeEntity.Id);
+            if (college != null)
+            {
+                college.Name = collegeEntity.Name;
+                college.Director = collegeEntity.Director;
+                
+            }
+            return college;
+
         }
 
         public async Task<CollegeEntity> Create(CollegeEntity collegeEntity)

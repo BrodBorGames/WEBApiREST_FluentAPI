@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using System.Net;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WEBApiREST;
 using WEBApiREST.Models;
@@ -95,8 +97,36 @@ namespace WebAPI1.Repositories
             return existingUser;
         }
 
-        
+        public async Task<UserEntity?> Delete(Guid Id)
+        {
+            var deletedUser = await _dbcontext.User.FirstOrDefaultAsync(x => x.Id == Id);
+            if(deletedUser == null)
+            {
+                return null;
+            }
+            _dbcontext.User.Remove(deletedUser);
+            await _dbcontext.SaveChangesAsync();
+            return deletedUser;
+        }
 
+        public async Task<UserEntity?> GetWithCollege(Guid id)
+        {
+            var userWithCollege = await _dbcontext.User.Include(x => x.College).FirstOrDefaultAsync(x => x.Id ==id);
+            if(userWithCollege == null)
+            {
+                return null;
+            }
+            return userWithCollege;
+        }
 
+        public async Task<List<UserEntity?>> GetWithCollege()
+        {
+            var usersWithCollege = await _dbcontext.User.Include(x => x.College).ToListAsync();
+            if (usersWithCollege == null)
+            {
+                return null;
+            }
+            return usersWithCollege;
+        }
     }
 }

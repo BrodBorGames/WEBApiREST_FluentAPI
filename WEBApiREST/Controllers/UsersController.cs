@@ -11,7 +11,7 @@ namespace WEBApiREST.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : Controller
+    public class UsersController : ControllerBase
     {
         
         private readonly IUsersRepository _usersRepository;
@@ -20,7 +20,6 @@ namespace WEBApiREST.Controllers
             _usersRepository = usersRepository;
 
         }
-        //[Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserEntity>>> Get()
         {
@@ -36,6 +35,25 @@ namespace WEBApiREST.Controllers
             if (user == null)
                 return NotFound();
             return Ok(user);
+        }
+        [HttpGet("college{id}")]
+        public async Task<ActionResult<UserEntity>> GetWithCollege(Guid id)
+        {
+            var user_college = await _usersRepository.GetWithCollege(id);
+            if ( user_college ==null)
+            {
+                return BadRequest();
+            }
+            return Ok(user_college);
+
+        }
+        [HttpGet("college")]
+        public async Task<ActionResult<UserEntity>> GetWithCollege()
+        {
+            var usersWithCollege = await _usersRepository.GetWithCollege();
+            return Ok(usersWithCollege);
+
+
         }
         [HttpPut]
         public async Task<ActionResult<UserEntity>> Put(UserEntity user)
@@ -57,8 +75,19 @@ namespace WEBApiREST.Controllers
 
             user.Id = Guid.NewGuid(); 
             var createdUser = await _usersRepository.Add(user);
-            return Ok(createdUser);
+            return Created();
 
+        }
+        
+        [HttpDelete]
+        public async Task<ActionResult<UserEntity>> Delete(Guid id)
+        {
+            var deletedUser = await _usersRepository.Delete(id);
+            if (deletedUser == null)
+            {
+                return NotFound();
+            }
+            return Ok(deletedUser);
         }
     }
 }
