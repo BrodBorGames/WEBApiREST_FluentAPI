@@ -1,4 +1,5 @@
 ﻿using FluentMigrator;
+using static WEBApiREST.Migrations.M001_AddCollegeTable;
 
 namespace WEBApiREST.Migrations
 {
@@ -12,9 +13,9 @@ namespace WEBApiREST.Migrations
 
         public override void Up()
         {
-            Insert.IntoTable("College")
-                .Row(new {Name = "Первоуральский Металлургический Колледж", Director = "Антипина Ольга Феликсовна"})
-                .Row(new { Name = "Первоуральский Политехникум", Director = "Иванов Иван Григорьевич" });
+            Insert.IntoTable(CollegeTableName)
+                .Row(new {name = "Первоуральский Металлургический Колледж", director = "Антипина Ольга Феликсовна"})
+                .Row(new { name = "Первоуральский Политехникум", director = "Иванов Иван Григорьевич" });
 
         }
     }

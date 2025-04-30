@@ -8,7 +8,7 @@ namespace WEBApiREST.Models
         public int Id { get; set; }
         public string Name { get; set; } = "";
         public string Director { get; set; } = "";
-        [JsonIgnore]
+        //[JsonIgnore]
         public ICollection<UserEntity>? Users { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using FluentMigrator;
+using static WEBApiREST.Migrations.M002_AddUserTable;
 
 namespace WEBApiREST.Migrations
 {
@@ -12,9 +13,9 @@ namespace WEBApiREST.Migrations
 
         public override void Up()
         {
-            Insert.IntoTable("User")
-                .Row(new { Id = Guid.NewGuid(), FirstName = "Данил", LastName = "Юсупов", Age = 19, Telephone = "+79326044223", CollegeID = 1 })
-                .Row(new { Id = Guid.NewGuid(), FirstName = "Иван", LastName = "Черняков", Age = 20, Telephone = "+79026044223", CollegeID = 2 });
+            Insert.IntoTable(UserTableName)
+                .Row(new { id = Guid.NewGuid(), first_name = "Данил", last_name = "Юсупов", age = 19, telephone = "+79326044223", college_id = 1 })
+                .Row(new { id = Guid.NewGuid(), first_name = "Иван", last_name = "Черняков", age = 20, telephone = "+79026044223", college_id = 2 });
         }
     }
 }
